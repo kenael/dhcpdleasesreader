@@ -134,16 +134,17 @@ func (info *DhcpdInfo) Read() error {
 			}
 
 		case "ends":
-			t, err := time.Parse(`2006/01/02 15:04:05`, fmt.Sprintf("%s %s", parts[2], parts[3]))
-			if err != nil {
-				log.Printf("Error parsing time: `%v`\n", err)
-			} else {
-				if info.debug {
-					log.Printf("dhcpd_info.go:   Parsed end time: `%v`\n", t)
+			if len(parts) > 2 {
+				t, err := time.Parse(`2006/01/02 15:04:05`, fmt.Sprintf("%s %s", parts[2], parts[3]))
+				if err != nil {
+					log.Printf("Error parsing time: `%v`\n", err)
+				} else {
+					if info.debug {
+						log.Printf("dhcpd_info.go:   Parsed end time: `%v`\n", t)
+					}
+					ptr.Ends = t
 				}
-				ptr.Ends = t
 			}
-
 		case "cltt":
 			t, err := time.Parse(`2006/01/02 15:04:05`, fmt.Sprintf("%s %s", parts[2], parts[3]))
 			if err != nil {
